@@ -1,0 +1,41 @@
+import unittest
+
+# each assignment will be checked as std1
+# don't change this line
+from std1 import * 
+
+class unit_test(unittest.TestCase):
+
+    def test_Multiple(self):
+##        pass
+        self.assertTrue(Multiple()==233168)
+
+    def test_InWords9(self):
+        pass
+        r = InWords(9)
+        self.assertEqual(r,"nine")
+        with self.assertRaises(Type):
+            r.split(2)
+
+    def test_InWords10(self):
+        #pass
+        r = InWords(10)
+        self.assertEqual(r,"ten")
+
+    def test_InWords100(self):
+        #pass
+        self.assertEqual(InWords(100),"one hundreed")
+
+    def test_InWords110(self):
+        #pass
+        self.assertEqual(InWords(100),"one hundreed ten")
+
+    def test_LongestWords(self):
+        #pass
+        r = LongestWord("hello")
+        self.assertEqual(r,"hello")
+        self.assertEqual(LongestWord("hello world"),"hello")
+        self.assertEqual(LongestWord("hello@@world"),"helloworld")
+    
+if __name__ == '__main__':
+    unittest.main()
