@@ -23,12 +23,20 @@ def CheckSubmissions(output = "results.txt", isAll = False):
     filetocall = "python testsuite.py -i "
     
     allSubmissions = GetAllSubmissions()
-    for aSubmit in allSubmissions:        
-        CopyFile(aSubmit)
-        stem = pathlib.Path(aSubmit).stem
-        tocall = filetocall + aSubmit + " -r " + output + " > " + stem+".out"
-        print(tocall)
-        subprocess.call(tocall)
+    for aSubmit in allSubmissions:
+        try:
+            py_compile.compile(aSubmit, doraise=True)
+            CopyFile(aSubmit)
+            stem = pathlib.Path(aSubmit).stem
+            tocall = filetocall + aSubmit + " -r " + output + " > " + stem+".out"
+            print(tocall)
+            subprocess.call(tocall)
+        except py_compile.PyCompileError:
+            stem = pathlib.Path(aSubmit).stem
+            f = open(output, "a+")
+            f.writelines(stem+" Compile error,Compile Error, Compile Error\n")
+            f.close()
+            
         if isAll==False:
             ch = input("Do you want to continue (y/n)")
             if ch.lower() != "y":
