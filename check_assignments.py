@@ -5,25 +5,30 @@ import getopt
 import glob
 import subprocess
 import pathlib
+import py_compile
 
 def CopyFile(inputfile):
     dst = "std1.py"
     shutil.copyfile(inputfile, dst)
 
-def GetAllSubmissions():
+def GetAllSubmissions(inputfile):
     # get all list of python files in submissions folder
-    return glob.glob("submissions/*.py")
+    if inputfile == "":
+        inputfile = "submissions/*.py"
+    
+    return glob.glob(inputfile)
 
 
-def CheckSubmissions(output = "results.txt", isAll = False):
+def CheckSubmissions(output = "results.txt", isAll = False, inputfile = ""):
     f = open(output, "w+")
     f.writelines("filename,errors,failures\n")
     f.close()
 
     filetocall = "python testsuite.py -i "
     
-    allSubmissions = GetAllSubmissions()
+    allSubmissions = GetAllSubmissions(inputfile)
     for aSubmit in allSubmissions:
+        print("***** starting for ******",aSubmit)
         try:
             py_compile.compile(aSubmit, doraise=True)
             CopyFile(aSubmit)
@@ -32,11 +37,19 @@ def CheckSubmissions(output = "results.txt", isAll = False):
             print(tocall)
             subprocess.call(tocall)
         except py_compile.PyCompileError:
+            print("***************** COMPILE ERROR ***************",stem)
             stem = pathlib.Path(aSubmit).stem
             f = open(output, "a+")
             f.writelines(stem+" Compile error,Compile Error, Compile Error\n")
             f.close()
-            
+        except:
+            stem = pathlib.Path(aSubmit).stem
+            print("***************** ERROR ***************",stem)
+            f = open(output, "a+")
+            f.writelines(stem+" Error, Error, Error\n")
+            f.close()
+        print("***** ending for ******",aSubmit)
+        
         if isAll==False:
             ch = input("Do you want to continue (y/n)")
             if ch.lower() != "y":
@@ -44,19 +57,22 @@ def CheckSubmissions(output = "results.txt", isAll = False):
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv,"all:o:")
+        opts, args = getopt.getopt(argv,"all:o:i:")
     except getopt.GetoptError:
-        print("check_assignment.py -all -o outputfile ")
+        print("check_assignment.py -all -o outputfile [-i inputfile]")
 
     isAll = False
     outputfile = "results.txt"
+    inputfile = ""
     for opt, arg in opts:
         if opt in ('-all'):
             isAll = True
         if opt in ("-o"):
             outputfile = arg
+        if opt in ("-i"):
+            inputfile = arg
 
-    CheckSubmissions(isAll = isAll, output = outputfile)  
+    CheckSubmissions(isAll = isAll, output = outputfile, inputfile = inputfile)  
 
             
 

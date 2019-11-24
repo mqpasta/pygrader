@@ -44,11 +44,14 @@ def RunTest(inputfile, resultfile):
     #CopyFile(inputfile)
     # perform test
     try:
-        py_compile.compile(inputfile, doraise=True)
+        #py_compile.compile(inputfile, doraise=True)
         r = CheckFile(inputfile) # copy and run test
         towrite = str(r.file+","+r.errors+","+r.failures+"\n")
     except py_compile.PyCompileError:
         towrite = aSubmit + ",Compile Error,Compile Error\n"
+    except:
+        towrite = aSubmit + ",Error,Error\n"       
+        
     # store result
     f = open(resultfile,"a+")
     f.writelines(towrite)
