@@ -37,8 +37,8 @@ def CheckSubmissions(output = "results.txt", isAll = False, inputfile = ""):
             print(tocall)
             subprocess.call(tocall)
         except py_compile.PyCompileError:
-            print("***************** COMPILE ERROR ***************",stem)
             stem = pathlib.Path(aSubmit).stem
+            print("***************** COMPILE ERROR ***************",stem)
             f = open(output, "a+")
             f.writelines(stem+" Compile error,Compile Error, Compile Error\n")
             f.close()
