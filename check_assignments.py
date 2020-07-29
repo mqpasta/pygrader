@@ -40,13 +40,13 @@ def CheckSubmissions(output = "results.txt", isAll = False, inputfile = ""):
             stem = pathlib.Path(aSubmit).stem
             print("***************** COMPILE ERROR ***************",stem)
             f = open(output, "a+")
-            f.writelines(stem+" Compile error,Compile Error, Compile Error\n")
+            f.writelines(stem+", Compile Error, Compile Error\n")
             f.close()
         except:
             stem = pathlib.Path(aSubmit).stem
             print("***************** ERROR ***************",stem)
             f = open(output, "a+")
-            f.writelines(stem+" Error, Error, Error\n")
+            f.writelines(stem+", Error, Error\n")
             f.close()
         print("***** ending for ******",aSubmit)
         

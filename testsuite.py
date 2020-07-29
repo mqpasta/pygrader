@@ -74,7 +74,7 @@ def main(argv):
     
     inputfile = ''
     outputfile = ''
-    resultfile = 'result.txt'
+    resultfile = 'results.txt'
     for opt, arg in opts:
         if opt == '-h':
             print('testsuite.py -i <inputfile> -r <resultfile>')
